@@ -1,9 +1,13 @@
-FROM tomcat:latest
+FROM centos:latest
 
 # Remove the default webapps directory
-RUN rm -rf /usr/local/tomcat/webapps/*
+RUN yum install java -y
 
-# Copy your WAR file into the webapps directory
-COPY target/*.war  /usr/local/tomcat/webapps/
+WORKDIR /opt/tomcat
+ADD https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.85/bin/apache-tomcat-9.0.85.tar.gz
 
-EXPOSE 8090
+RUN tar -xvzf apache-tomcat-9.0.85.tar.gz
+RUN mv apache-tomcat-9.0.85/* /opt/tomcat
+COPY target/*.war  /opt/tomcat/webapps/
+
+EXPOSE 8080
